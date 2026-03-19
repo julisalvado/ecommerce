@@ -11,9 +11,10 @@ public class CategoryRepository {
 
     public CategoryRepository() {
         categories = new ArrayList<Category>(
-                Arrays.asList(Category.builder().description("Electronica").id(1).build(),
-                        Category.builder().description("Cocina").id(2).build(),
-                        Category.builder().description("Gaming").id(3).build()));
+                Arrays.asList(Category.builder().description("Artes").id(1).build(),
+                        Category.builder().description("Ciencia").id(2).build(),
+                        Category.builder().description("Fantasia").id(3).build(),
+                        Category.builder().description("Terror").id(4).build()));
     }
 
     public ArrayList<Category> getCategories() {
