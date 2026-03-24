@@ -10,7 +10,7 @@ import com.uade.tpo.demo.exceptions.UserDuplicateException;
 import com.uade.tpo.demo.service.UserServiceImpl;
 
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,12 +21,12 @@ public class UsersController {
     private UserServiceImpl userService;
 
     @GetMapping
-    public ResponseEntity<ArrayList<User>> getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         Optional<User> result = userService.getUserById(userId);
         if (result.isPresent())
             return ResponseEntity.ok(result.get());
@@ -37,7 +37,6 @@ public class UsersController {
     public ResponseEntity<Object> createUser(@RequestBody UserRequest userRequest)
             throws UserDuplicateException {
         User result = userService.createUser(
-            userRequest.getId(),
             userRequest.getUsername(),
             userRequest.getEmail(),
             userRequest.getPassword(),
@@ -47,7 +46,7 @@ public class UsersController {
     }
 
     @PutMapping("/{userId}/email")
-    public ResponseEntity<User> updateUserEmail(@PathVariable int userId, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<User> updateUserEmail(@PathVariable Long userId, @RequestBody UserRequest userRequest) {
         Optional<User> result = userService.updateUserEmail(userId, userRequest.getEmail());
         if (result.isPresent())
             return ResponseEntity.ok(result.get());

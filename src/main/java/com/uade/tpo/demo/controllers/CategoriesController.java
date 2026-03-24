@@ -7,10 +7,9 @@ import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.dto.CategoryRequest;
 import com.uade.tpo.demo.exceptions.CategoryDuplicateException;
 import com.uade.tpo.demo.service.CategoryService;
-import com.uade.tpo.demo.service.CategoryServiceImpl;
 
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ public class CategoriesController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<ArrayList<Category>> getCategories() {
+    public ResponseEntity<List<Category>> getCategories() {
         return ResponseEntity.ok(categoryService.getCategories());
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable int categoryId) {
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
         Optional<Category> result = categoryService.getCategoryById(categoryId);
         if (result.isPresent())
             return ResponseEntity.ok(result.get());
@@ -44,7 +43,7 @@ public class CategoriesController {
     @PostMapping
     public ResponseEntity<Object> createCategory(@RequestBody CategoryRequest categoryRequest)
             throws CategoryDuplicateException {
-        Category result = categoryService.createCategory(categoryRequest.getId(), categoryRequest.getDescription());
+        Category result = categoryService.createCategory(categoryRequest.getDescription());
         return ResponseEntity.created(URI.create("/categories/" + result.getId())).body(result);
     }
 }

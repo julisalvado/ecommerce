@@ -1,8 +1,9 @@
 package com.uade.tpo.demo.service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.demo.entity.User;
@@ -10,30 +11,31 @@ import com.uade.tpo.demo.exceptions.UserDuplicateException;
 import com.uade.tpo.demo.repository.UserRepository;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService{
+
+    @Autowired
     private UserRepository userRepository;
 
-    public UserServiceImpl() {
-        userRepository = new UserRepository();
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
-    public ArrayList<User> getUsers() {
-        return userRepository.getUsers();
+    public Optional<User> getUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
-    public Optional<User> getUserById(int userId) {
-        return userRepository.getUserById(userId);
-    }
-
-    public User createUser(int id, String username, String email, String password, String role)
+    public User createUser(String username, String email, String password, String role)
             throws UserDuplicateException {
-        ArrayList<User> users = userRepository.getUsers();
-        if (users.stream().anyMatch(u -> u.getId() == id && u.getUsername().equals(username)))
+        List<User> users = userRepository.findAll();
+        if (users.stream().anyMatch(u -> u.getUsername().equals(username)))
             throw new UserDuplicateException();
-        return userRepository.createUser(id, username, email, password, role);
+        return userRepository.save(new User(username, email, password, role));
     }
     
-    public Optional<User> updateUserEmail(int userId, String newEmail) {
-    return userRepository.updateUserEmail(userId, newEmail);
-}
+    public Optional<User> updateUserEmail(Long userId, String newEmail) {
+        return userRepository.findById(userId).map(user -> {
+            user.setEmail(newEmail);
+        return userRepository.save(user);
+        });
+    }
 }
