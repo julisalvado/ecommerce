@@ -1,12 +1,13 @@
 package com.uade.tpo.demo.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.entity.dto.UserRequest;
 import com.uade.tpo.demo.exceptions.UserDuplicateException;
-import com.uade.tpo.demo.service.UserService;
+import com.uade.tpo.demo.service.UserServiceImpl;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -15,11 +16,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("users")
 public class UsersController {
-    private UserService userService;
 
-    public UsersController() {
-        userService = new UserService();
-    }
+    @Autowired
+    private UserServiceImpl userService;
 
     @GetMapping
     public ResponseEntity<ArrayList<User>> getUsers() {
@@ -49,9 +48,9 @@ public class UsersController {
 
     @PutMapping("/{userId}/email")
     public ResponseEntity<User> updateUserEmail(@PathVariable int userId, @RequestBody UserRequest userRequest) {
-    Optional<User> result = userService.updateUserEmail(userId, userRequest.getEmail());
-    if (result.isPresent())
-        return ResponseEntity.ok(result.get());
-    return ResponseEntity.notFound().build();
+        Optional<User> result = userService.updateUserEmail(userId, userRequest.getEmail());
+        if (result.isPresent())
+            return ResponseEntity.ok(result.get());
+        return ResponseEntity.notFound().build();
     }
 }
