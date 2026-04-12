@@ -1,0 +1,22 @@
+package com.uade.tpo.demo.service;
+
+import java.util.List;
+
+import com.uade.tpo.demo.entity.Libro;
+import com.uade.tpo.demo.entity.dto.LibroRequest;
+import com.uade.tpo.demo.exceptions.RecursoNotFoundException;
+
+public interface LibroService {
+
+    List<Libro> getLibros();
+
+    Libro getLibroById(Long id) throws RecursoNotFoundException;
+
+    Libro createLibro(LibroRequest request) throws RecursoNotFoundException;
+
+    List<Libro> getLibrosByGenero(Long idGenero) throws RecursoNotFoundException;
+
+    List<Libro> getLibrosByPrecio(float precioMin, float precioMax);
+
+    List<Libro> getLibrosByAutor(Long idAutor) throws RecursoNotFoundException;
+}
