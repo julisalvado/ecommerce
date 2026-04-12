@@ -39,4 +39,8 @@ public class Libro {
     @ManyToOne
     @JoinColumn(name = "idVendedor", nullable = false)
     private User vendedor;
+
+    @ManyToOne
+    @JoinColumn(name = "idAutor", nullable = false)
+    private Autor autor;
 }
