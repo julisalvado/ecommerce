@@ -10,7 +10,7 @@ public interface LibroService {
 
     List<Libro> getLibros();
 
-    Libro getLibroById(Long id) throws RecursoNotFoundException;
+    Libro getLibroById(Long id);
 
     Libro createLibro(LibroRequest request) throws RecursoNotFoundException;
 
@@ -19,4 +19,8 @@ public interface LibroService {
     List<Libro> getLibrosByPrecio(float precioMin, float precioMax);
 
     List<Libro> getLibrosByAutor(Long idAutor) throws RecursoNotFoundException;
+
+    boolean tieneStock(Long id, int cantidad);
+
+    void descontarStock(Long id, int cantidad);
 }

@@ -43,4 +43,8 @@ public class Libro {
     @ManyToOne
     @JoinColumn(name = "idAutor", nullable = false)
     private Autor autor;
+
+    public Long getId() {
+        return idLibro;
+    }
 }

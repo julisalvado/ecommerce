@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,35 +16,37 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Orden {
+public class Carrito {
 
-    public Orden() {
-    }
+    public Carrito() {}
 
-    public Orden(Long idUsuario, LocalDateTime fechaVenta, Float total, String estado, Long idCarrito, String metodoPago) {
+    public Carrito(Long idUsuario, LocalDateTime fechaUltimaActividad, String estado, float total) {
         this.idUsuario = idUsuario;
-        this.fechaVenta = fechaVenta;
-        this.total = total;
+        this.fechaUltimaActividad = fechaUltimaActividad;
         this.estado = estado;
-        this.idCarrito = idCarrito;
-        this.metodoPago = metodoPago;
+        this.total = total;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idOrden;
-
-    private Long idUsuario;
-    private LocalDateTime fechaVenta;
-    private Float total;
-    private String estado;
     private Long idCarrito;
-    private String metodoPago;
+
+    @Column
+    private Long idUsuario;
+
+    @Column
+    private LocalDateTime fechaUltimaActividad;
+
+    @Column
+    private String estado;
+
+    @Column
+    private float total;
+
+    @OneToMany(mappedBy = "carrito")
+    private List<ItemCarrito> items = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario") 
+    @JoinColumn(name = "idUsuario", insertable = false, updatable = false)
     private User usuario;
-
-    @OneToMany(mappedBy = "orden", orphanRemoval = true)
-    private List<ItemOrden> items = new ArrayList<>();
 }

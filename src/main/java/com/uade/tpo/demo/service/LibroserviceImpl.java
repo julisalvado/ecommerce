@@ -3,7 +3,9 @@ package com.uade.tpo.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.uade.tpo.demo.entity.Autor;
 import com.uade.tpo.demo.entity.Descuento;
@@ -39,11 +41,12 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
-    public Libro getLibroById(Long id) throws RecursoNotFoundException {
+    public Libro getLibroById(Long id){
         Optional<Libro> libroOpt = libroRepository.findById(id);
 
         if (libroOpt.isEmpty()) {
-            throw new RecursoNotFoundException();
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "El libro seleccionado no existe");
         }
 
         return libroOpt.get();
@@ -125,5 +128,28 @@ public class LibroServiceImpl implements LibroService {
         }
 
         return libroRepository.findByAutor(autorOpt.get());
+    }
+
+    public boolean tieneStock(Long id, int cantidadSolicitada) {
+        return libroRepository.findById(id)
+            .map(libro -> libro.getStock() >= cantidadSolicitada) 
+            .orElse(false); 
+    }
+
+    public void descontarStock(Long id, int cantidad) {
+     
+        Libro libro = libroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + id));
+
+    
+        if (libro.getStock() < cantidad) {
+            throw new RuntimeException("No hay stock suficiente para el libro: " + libro.getTitulo());
+        }
+
+      
+        int nuevoStock = libro.getStock() - cantidad;
+        libro.setStock(nuevoStock);
+
+        libroRepository.save(libro);
     }
 }
