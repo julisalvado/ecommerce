@@ -11,4 +11,5 @@ public class LibroRequest {
     private int stock;
     private Long idDescuento;
     private Long idVendedor;
+    private Long idAutor;
 }
