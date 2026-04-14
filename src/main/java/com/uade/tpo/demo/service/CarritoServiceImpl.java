@@ -13,7 +13,6 @@ import com.uade.tpo.demo.entity.Carrito;
 import com.uade.tpo.demo.entity.ItemCarrito;
 import com.uade.tpo.demo.entity.Libro;
 import com.uade.tpo.demo.entity.Orden;
-import com.uade.tpo.demo.exceptions.RecursoNotFoundException;
 import com.uade.tpo.demo.repository.CarritoRepository;
 import com.uade.tpo.demo.repository.ItemCarritoRepository;
 
@@ -111,7 +110,7 @@ public class CarritoServiceImpl implements CarritoService {
         Carrito carrito = getCarritoActivo(usuarioId);
 
         // 2. obtener items
-        List<ItemCarrito> items = itemCarritoRepository.findByCarritoId(carrito.getIdCarrito());
+        List<ItemCarrito> items = itemCarritoRepository.findByCarritoIdCarrito(carrito.getIdCarrito());
 
         if (items.isEmpty())
             throw new ResponseStatusException(
@@ -142,7 +141,7 @@ public class CarritoServiceImpl implements CarritoService {
     // Vaciar items del carrito (mantiene el carrito activo)
     @Override
     public void vaciarCarrito(Long carritoId) {
-        itemCarritoRepository.deleteByCarritoId(carritoId);
+        itemCarritoRepository.deleteByCarritoIdCarrito(carritoId);
     }
 
     // Marcar carrito como abandonado

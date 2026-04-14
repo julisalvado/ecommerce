@@ -20,8 +20,8 @@ public class Orden {
     public Orden() {
     }
 
-    public Orden(Long idUsuario, LocalDateTime fechaVenta, Float total, String estado, Long idCarrito, String metodoPago) {
-        this.idUsuario = idUsuario;
+    public Orden(User usuario, LocalDateTime fechaVenta, Float total, String estado, Long idCarrito, String metodoPago) {
+        this.usuario = usuario;
         this.fechaVenta = fechaVenta;
         this.total = total;
         this.estado = estado;
@@ -33,7 +33,6 @@ public class Orden {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idOrden;
 
-    private Long idUsuario;
     private LocalDateTime fechaVenta;
     private Float total;
     private String estado;
@@ -41,7 +40,7 @@ public class Orden {
     private String metodoPago;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario") 
+    @JoinColumn(name = "idUsuario") 
     private User usuario;
 
     @OneToMany(mappedBy = "orden", orphanRemoval = true)
