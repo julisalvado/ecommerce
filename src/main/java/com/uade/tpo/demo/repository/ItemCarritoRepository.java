@@ -10,7 +10,7 @@ import com.uade.tpo.demo.entity.ItemCarrito;
 @Repository
 public interface ItemCarritoRepository extends JpaRepository<ItemCarrito,Long> {
 
-    List<ItemCarrito> findByCarritoId(Long idCarrito);
+    List<ItemCarrito> findByCarritoIdCarrito(Long idCarrito);
 
-    void deleteByCarritoId(Long idCarrito);
+    void deleteByCarritoIdCarrito(Long idCarrito);
 }

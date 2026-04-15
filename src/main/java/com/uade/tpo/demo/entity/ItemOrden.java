@@ -14,8 +14,8 @@ import lombok.Data;
 public class ItemOrden {
     public ItemOrden () {}
 
-    public ItemOrden(Long idOrden, Long idLibro, int cantidad, float precioUnitario, float subtotal) {
-        this.idOrden = idOrden;
+    public ItemOrden(Orden orden, Long idLibro, int cantidad, float precioUnitario, float subtotal) {
+        this.orden = orden;
         this.idLibro = idLibro;
         this.cantidad = cantidad;
         this.precioUnitario =precioUnitario;
@@ -26,8 +26,6 @@ public class ItemOrden {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idItemOrden;
 
-    @Column
-    private Long idOrden;
     @Column
     private Long idLibro;
 
@@ -41,7 +39,7 @@ public class ItemOrden {
     private float subtotal;
 
     @ManyToOne
-    @JoinColumn(name = "id_orden")
+    @JoinColumn(name = "idOrden")
     private Orden orden;
     
     public void setCantidad(int cantidad) {
