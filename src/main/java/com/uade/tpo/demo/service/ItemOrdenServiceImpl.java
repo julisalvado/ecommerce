@@ -1,9 +1,12 @@
 package com.uade.tpo.demo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.uade.tpo.demo.entity.ItemOrden;
 import com.uade.tpo.demo.entity.Orden;
@@ -19,7 +22,13 @@ public class ItemOrdenServiceImpl implements ItemOrdenService {
 
     @Autowired
     private ItemOrdenRepository itemOrdenRepository;
-    //Crear item de orden
+
+    @Autowired
+    private LibroService libroService;
+
+    @Autowired
+    private OrdenRepository ordenRepository;
+
     @Override
     public ItemOrden createItemOrden(Long idOrden, Long idLibro, int cantidad, float precioUnitario) {
 
@@ -31,27 +40,22 @@ public class ItemOrdenServiceImpl implements ItemOrdenService {
         item.setIdLibro(idLibro);
         item.setCantidad(cantidad);
         item.setPrecioUnitario(precioUnitario);
-        // calcular subtotal
         item.calcularSubtotal();
         return itemOrdenRepository.save(item);
     }
-    //Obtener items por orden
-    @Override
-    public List<ItemOrden> getItemsByOrden(Long idOrden) {
-        return itemOrdenRepository.findByOrdenId(idOrden);
-    }
-    //Obtener total de una orden
-    @Override
-    public Float getTotalByOrden(Long idOrden) {
-        return itemOrdenRepository.getTotalByOrden(idOrden);
-    }
-    //Eliminar item
-    @Override
-    public void deleteItemOrden(Long id) throws RecursoNotFoundException {
 
-        ItemOrden item = itemOrdenRepository.findById(id)
-                .orElseThrow(() -> new RecursoNotFoundException());
-
-        itemOrdenRepository.delete(item);
-    }
+    @Override
+    public List<ItemOrdenResponse> getItemsByOrden(Long idOrden) {
+    return itemOrdenRepository.findByOrdenId(idOrden).stream()
+            .map(item -> {
+                ItemOrdenResponse response = new ItemOrdenResponse();
+                response.setIdItemOrden(item.getIdItemOrden());
+                response.setIdLibro(item.getLibro().getIdLibro());
+                response.setTituloLibro(item.getLibro().getTitulo());
+                response.setCantidad(item.getCantidad());
+                response.setPrecioUnitario(item.getPrecioUnitario());
+                response.setSubtotal(item.getSubtotal());
+                return response;
+            }).collect(Collectors.toList());
+}
 }

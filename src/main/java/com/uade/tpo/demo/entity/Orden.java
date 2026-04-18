@@ -12,6 +12,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import java.util.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+
 
 @Data
 @Entity
@@ -25,7 +29,7 @@ public class Orden {
         this.fechaVenta = fechaVenta;
         this.total = total;
         this.estado = estado;
-        this.idCarrito = idCarrito;
+        this.carrito = carrito;
         this.metodoPago = metodoPago;
     }
 
@@ -35,8 +39,11 @@ public class Orden {
 
     private LocalDateTime fechaVenta;
     private Float total;
+
+    @Column
     private String estado;
-    private Long idCarrito;
+    //private Long idCarrito;
+    @Column
     private String metodoPago;
 
     @ManyToOne
