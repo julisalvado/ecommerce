@@ -18,10 +18,8 @@ public class Editorial {
     public Editorial() {}
 
     public Editorial(String nombre) {
-        this.nombre = nombre;
-       
+        this.nombre = nombre; 
     }
-
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

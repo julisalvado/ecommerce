@@ -48,14 +48,12 @@ public class CarritoController {
     }
 
     // PUT /carrito/{usuarioId}/items/{itemId}
-    // Nota: Usamos itemId porque tu service pide itemId para modificar
     @PutMapping("/{usuarioId}/items/{itemId}")
     public ResponseEntity<ItemCarrito> modificarItem(
             @PathVariable Long usuarioId,
             @PathVariable Long itemId,
             @RequestBody int cantidad) throws RecursoNotFoundException {
         
-        // Primero obtenemos el ID del carrito para cumplir con la firma del service
         Carrito carrito = carritoService.getCarritoActivo(usuarioId);
         
         ItemCarrito itemModificado = carritoService.modificarItem(
