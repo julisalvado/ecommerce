@@ -1,17 +1,18 @@
 package com.uade.tpo.demo.service;
 
-import java.util.List;
 import com.uade.tpo.demo.entity.Carrito;
 import com.uade.tpo.demo.entity.ItemCarrito;
 import com.uade.tpo.demo.entity.Orden;
-import com.uade.tpo.demo.entity.dto.OrdenDetalleResponse;
-import com.uade.tpo.demo.entity.dto.OrdenResponse;
-import com.uade.tpo.demo.exceptions.RecursoNotFoundException;
+import com.uade.tpo.demo.entity.dto.OrdenRequest;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+@Service
 public interface OrdenService {
-    OrdenDetalleResponse getById(Long idOrden);
-    List<OrdenResponse> getByUsuario(Long idUsuario);
-    List<OrdenResponse> getOrdenes();
-    Orden crearDesdeCarrito(Carrito carrito, List<ItemCarrito> items);
-  //  Orden cambiarEstado(Long idOrden, String estado) throws RecursoNotFoundException;
+
+    public Orden createOrden(OrdenRequest request);
+
+    public Orden crearDesdeCarrito(Carrito carrito, List<ItemCarrito> items);
 }

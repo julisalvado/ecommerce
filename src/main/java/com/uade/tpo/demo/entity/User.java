@@ -27,7 +27,6 @@ public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long idUsuario;
 
     @Column
@@ -39,15 +38,12 @@ public class User {
     @Column
     private String password;
 
-    /*@Column
-    private String role;*/
+    @Column
+    private String role;
 
     @OneToOne(mappedBy = "usuario")
     private Carrito carrito;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Orden> ordenes;
-
-    
-
+    private List<Orden> ordenes = new ArrayList<>();
 }

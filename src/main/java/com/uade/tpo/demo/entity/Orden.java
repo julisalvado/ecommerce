@@ -1,5 +1,9 @@
 package com.uade.tpo.demo.entity;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +24,7 @@ public class Orden {
     public Orden() {
     }
 
-    public Orden(User usuario, Date fechaVenta, Float total, String estado, Carrito carrito, String metodoPago) {
+    public Orden(User usuario, LocalDateTime fechaVenta, Float total, String estado, Long idCarrito, String metodoPago) {
         this.usuario = usuario;
         this.fechaVenta = fechaVenta;
         this.total = total;
@@ -33,11 +37,7 @@ public class Orden {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idOrden;
 
-    //private Long idUsuario;
-    @Column
-    private Date fechaVenta;
-
-    @Column
+    private LocalDateTime fechaVenta;
     private Float total;
 
     @Column
@@ -47,14 +47,9 @@ public class Orden {
     private String metodoPago;
 
     @ManyToOne
-    @JoinColumn(name = "idUsuario", nullable = false) 
+    @JoinColumn(name = "idUsuario") 
     private User usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "idCarrito")
-    private Carrito carrito;
- 
-    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
-    private List<ItemOrden> items;
-    
+    @OneToMany(mappedBy = "orden", orphanRemoval = true)
+    private List<ItemOrden> items = new ArrayList<>();
 }

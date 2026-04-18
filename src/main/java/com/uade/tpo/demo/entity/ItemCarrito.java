@@ -15,10 +15,9 @@ public class ItemCarrito {
 
     public ItemCarrito () {}
 
-    public ItemCarrito(Carrito carrito, Libro libro, int cantidad, float precioUnitario, float subtotal) {
-        
-        this.carrito = carrito;
-        this.libro = libro;
+    public ItemCarrito(Long idCarrito, Long idLibro, int cantidad, float precioUnitario, float subtotal) {
+        this.idCarrito = idCarrito;
+        this.idLibro = idLibro;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.subtotal = subtotal;
@@ -27,6 +26,12 @@ public class ItemCarrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idItemCarrito;
+
+    @Column
+    private Long idCarrito;
+
+    @Column
+    private Long idLibro;
 
     @Column
     private int cantidad;
@@ -38,11 +43,11 @@ public class ItemCarrito {
     private float subtotal;
 
     @ManyToOne
-    @JoinColumn(name = "idCarrito", nullable = false)
+    @JoinColumn(name = "carrito_id")
     private Carrito carrito;
 
     @ManyToOne
-    @JoinColumn(name = "idLibro", nullable = false)
+    @JoinColumn(name = "libro_id")
     private Libro libro;
 
     public float calcularSubtotal() {

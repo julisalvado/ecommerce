@@ -9,14 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.uade.tpo.demo.entity.ItemOrden;
-import com.uade.tpo.demo.entity.Libro;
 import com.uade.tpo.demo.entity.Orden;
-import com.uade.tpo.demo.entity.dto.ItemOrdenResponse;
+import com.uade.tpo.demo.exceptions.RecursoNotFoundException;
 import com.uade.tpo.demo.repository.ItemOrdenRepository;
 import com.uade.tpo.demo.repository.OrdenRepository;
 
 @Service
 public class ItemOrdenServiceImpl implements ItemOrdenService {
+
+    @Autowired
+    private OrdenRepository ordenRepository;
 
     @Autowired
     private ItemOrdenRepository itemOrdenRepository;
@@ -29,13 +31,13 @@ public class ItemOrdenServiceImpl implements ItemOrdenService {
 
     @Override
     public ItemOrden createItemOrden(Long idOrden, Long idLibro, int cantidad, float precioUnitario) {
-        Orden orden = ordenRepository.findById(idOrden)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Orden no encontrada"));
-        Libro libro = libroService.getLibroById(idLibro);
 
+        Orden orden = ordenRepository.findById(idOrden)
+            .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
+            
         ItemOrden item = new ItemOrden();
         item.setOrden(orden);
-        item.setLibro(libro);
+        item.setIdLibro(idLibro);
         item.setCantidad(cantidad);
         item.setPrecioUnitario(precioUnitario);
         item.calcularSubtotal();
